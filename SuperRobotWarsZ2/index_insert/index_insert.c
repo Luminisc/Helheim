@@ -1,5 +1,5 @@
 /*
-用于导入索引
+鐢ㄤ簬瀵煎叆绱㈠紩
 made by Darkness-TX
 2023.06.21
 */
@@ -37,7 +37,7 @@ void IndexInsert(char* idxname, char* info)
 	sprintf(iniPath, "%s\\%s", dirPath, "index.ini");
 	if (_access(iniPath, 4) == -1)
 	{
-		printf("初始化失败，请确认目录下是否含有index.ini\n");
+		printf("鍒濆鍖栧け璐ワ紝璇风‘璁ょ洰褰曚笅鏄惁鍚湁index.ini\n");
 		system("pause");
 		exit(0);
 	}
@@ -47,7 +47,7 @@ void IndexInsert(char* idxname, char* info)
 	idx = fopen(buff, "rb");
 	if (idx == NULL)
 	{
-		printf("初始化失败，请确认目录下是否含有%s\n", buff);
+		printf("鍒濆鍖栧け璐ワ紝璇风‘璁ょ洰褰曚笅鏄惁鍚湁%s\n", buff);
 		system("pause");
 		exit(0);
 	}
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
 {
 	FILE* src = NULL, * dst = NULL, * info = NULL;
 	setlocale(LC_ALL, "chs");
-	printf("project：Helheim-超级机器人大战Z2\n用于导入索引。\nby Darkness-TX 2023.06.21\n\n");
+	printf("project锛欻elheim-瓒呯骇鏈哄櫒浜哄ぇ鎴榋2\n鐢ㄤ簬瀵煎叆绱㈠紩銆俓nby Darkness-TX 2023.06.21\n\n");
 	IndexInsert(argv[1], argv[2]);
 	system("pause");
 	return 0;

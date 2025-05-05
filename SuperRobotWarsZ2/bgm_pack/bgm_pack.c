@@ -1,5 +1,5 @@
 /*
-ÓÃÓÚ²»Ñ¹Ëõ·â°üÎÄ¼ş²¢Éú³ÉË÷Òı
+ç”¨äºä¸å‹ç¼©å°åŒ…æ–‡ä»¶å¹¶ç”Ÿæˆç´¢å¼•
 made by Darkness-TX
 2023.06.20
 */
@@ -21,24 +21,24 @@ unit32 FileNum = 0;
 
 struct index
 {
-	char FileName[260];//ÎÄ¼şÃû
-	unit32 FileSize;//ÎÄ¼ş´óĞ¡
+	char FileName[260];//æ–‡ä»¶å
+	unit32 FileSize;//æ–‡ä»¶å¤§å°
 }Index[20000];
 
 unit32 process_dir(char* dname)
 {
 	long Handle;
 	struct _finddata64i32_t FileInfo;
-	_chdir(dname);//Ìø×ªÂ·¾¶
+	_chdir(dname);//è·³è½¬è·¯å¾„
 	if ((Handle = _findfirst("*.*", &FileInfo)) == -1L)
 	{
-		printf("Ã»ÓĞÕÒµ½Æ¥ÅäµÄÏîÄ¿£¬ÇëÈ·ÈÏÄ¿Â¼ÖĞÊÇ·ñ´æÔÚÎÄ¼ş\n");
+		printf("æ²¡æœ‰æ‰¾åˆ°åŒ¹é…çš„é¡¹ç›®ï¼Œè¯·ç¡®è®¤ç›®å½•ä¸­æ˜¯å¦å­˜åœ¨æ–‡ä»¶\n");
 		system("pause");
 		return -1;
 	}
 	do
 	{
-		if (FileInfo.name[0] == '.')  //¹ıÂË±¾¼¶Ä¿Â¼ºÍ¸¸Ä¿Â¼
+		if (FileInfo.name[0] == '.')  //è¿‡æ»¤æœ¬çº§ç›®å½•å’Œçˆ¶ç›®å½•
 			continue;
 		sprintf(Index[FileNum].FileName, FileInfo.name);
 		Index[FileNum].FileSize = FileInfo.size;
@@ -83,9 +83,9 @@ void Pack(char* fname)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project£ºHelheim-³¬¼¶»úÆ÷ÈË´óÕ½Z2\nÓÃÓÚ²»Ñ¹Ëõ·â°üÎÄ¼ş²¢Éú³ÉË÷Òı¡£\nby Darkness-TX 2023.06.20\n\n");
+	printf("projectï¼šHelheim-è¶…çº§æœºå™¨äººå¤§æˆ˜Z2\nç”¨äºä¸å‹ç¼©å°åŒ…æ–‡ä»¶å¹¶ç”Ÿæˆç´¢å¼•ã€‚\nby Darkness-TX 2023.06.20\n\n");
 	Pack(argv[1]);
-	printf("ÒÑÍê³É£¬×ÜÎÄ¼şÊı%d\n", FileNum);
+	printf("å·²å®Œæˆï¼Œæ€»æ–‡ä»¶æ•°%d\n", FileNum);
 	system("pause");
 	return 0;
 }

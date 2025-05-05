@@ -1,5 +1,5 @@
 /*
-ÓÃÓÚ½â°üÓë½âÑ¹EVENTBIN.BIN
+ç”¨äºè§£åŒ…ä¸è§£å‹EVENTBIN.BIN
 made by Darkness-TX
 2023.03.06
 */
@@ -41,7 +41,7 @@ void UnpackBlock(unit8* data, unit32 size, unit32 number)
 	FILE* dst = NULL;
 	memcpy(&EVENT_Header, data, 0x10);
 	pos = EVENT_Header.header_len;
-	//EVENT_Header.num»ù±¾¶¼ÊÇ1£¬ÉÙÁ¿0£¬Ã»·¢ÏÖÓĞ1ÒÔÉÏµÄ
+	//EVENT_Header.numåŸºæœ¬éƒ½æ˜¯1ï¼Œå°‘é‡0ï¼Œæ²¡å‘ç°æœ‰1ä»¥ä¸Šçš„
 	while (EVENT_Header.num)
 	{
 		memcpy(eventname, data + pos, 12);
@@ -87,17 +87,17 @@ void UnpackBlock(unit8* data, unit32 size, unit32 number)
 				count++;
 			}
 			pos += readsize;
-			//È»ºó»á¸úÒ»´®eventname
+			//ç„¶åä¼šè·Ÿä¸€ä¸²eventname
 			if (strncmp(eventname, data + pos, 12) != 0)
 			{
-				printf("\t´Ë¿é¿ÉÄÜÓĞ¶ÁÈ¡´íÎó£¡pos:0x%X filesize:0x%X\n", pos, size);
+				printf("\tæ­¤å—å¯èƒ½æœ‰è¯»å–é”™è¯¯ï¼pos:0x%X filesize:0x%X\n", pos, size);
 				system("pause");
 			}
 			pos += 12;
-			//È»ºó¸úEND\0£¬×îºó0x10¶ÔÆë
+			//ç„¶åè·ŸEND\0ï¼Œæœ€å0x10å¯¹é½
 			if (strncmp(data + pos, "END\0", 4) != 0)
 			{
-				printf("\t´Ë¿é¿ÉÄÜÓĞ¶ÁÈ¡´íÎó£¡pos:0x%X filesize:0x%X\n", pos, size);
+				printf("\tæ­¤å—å¯èƒ½æœ‰è¯»å–é”™è¯¯ï¼pos:0x%X filesize:0x%X\n", pos, size);
 				system("pause");
 			}
 			pos += 4;
@@ -120,15 +120,15 @@ void UnpackBlock(unit8* data, unit32 size, unit32 number)
 		}
 		else
 		{
-			printf("\tÎ´ÖªµÄ¿é±êÊ¶:%s\n", eventname);
+			printf("\tæœªçŸ¥çš„å—æ ‡è¯†:%s\n", eventname);
 			system("pause");
 		}
 		EVENT_Header.num--;
 	}
-	//×îÖÕ³¤¶ÈÓ¦¸ÃÊÇÏàµÈµÄ£¬ÅĞ¶ÏÒ»ÏÂ
+	//æœ€ç»ˆé•¿åº¦åº”è¯¥æ˜¯ç›¸ç­‰çš„ï¼Œåˆ¤æ–­ä¸€ä¸‹
 	if (pos != size)
 	{
-		printf("\t³¤¶È²»¶Ô£¡pos:0x%X size:0x%X\n", pos, size);
+		printf("\té•¿åº¦ä¸å¯¹ï¼pos:0x%X size:0x%X\n", pos, size);
 		system("pause");
 	}
 }
@@ -141,7 +141,7 @@ void Unpack()
 	src = fopen("EVENTBINBDY.BIN", "rb");
 	if (src == NULL)
 	{
-		printf("Î´ÔÚÄ¿Â¼ÏÂÕÒµ½EVENTBINBDY.BIN£¡\n");
+		printf("æœªåœ¨ç›®å½•ä¸‹æ‰¾åˆ°EVENTBINBDY.BINï¼\n");
 		system("pause");
 		exit(0);
 	}
@@ -160,7 +160,7 @@ void Unpack()
 	src = fopen("EVENTBIN.BIN", "rb");
 	if (src == NULL)
 	{
-		printf("Î´ÔÚÄ¿Â¼ÏÂÕÒµ½EVENTBIN.BIN£¡\n");
+		printf("æœªåœ¨ç›®å½•ä¸‹æ‰¾åˆ°EVENTBIN.BINï¼\n");
 		system("pause");
 		exit(0);
 	}
@@ -190,9 +190,9 @@ void Unpack()
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project£ºHelheim-³¬¼¶»úÆ÷ÈË´óÕ½Z2\nÓÃÓÚ½â°üÓë½âÑ¹EVENTBIN.BIN¡£\nby Darkness-TX 2023.03.06\n\n");
+	printf("projectï¼šHelheim-è¶…çº§æœºå™¨äººå¤§æˆ˜Z2\nç”¨äºè§£åŒ…ä¸è§£å‹EVENTBIN.BINã€‚\nby Darkness-TX 2023.03.06\n\n");
 	Unpack();
-	printf("ÒÑÍê³É£¬×ÜÎÄ¼şÊı%d\n", FileNum);
+	printf("å·²å®Œæˆï¼Œæ€»æ–‡ä»¶æ•°%d\n", FileNum);
 	system("pause");
 	return 0;
 }

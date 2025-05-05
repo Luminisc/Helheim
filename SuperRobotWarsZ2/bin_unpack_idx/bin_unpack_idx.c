@@ -1,5 +1,5 @@
 /*
-用于基于索引的解包bin文件
+鐢ㄤ簬鍩轰簬绱㈠紩鐨勮В鍖卋in鏂囦欢
 made by Darkness-TX
 2023.04.10
 */
@@ -39,7 +39,7 @@ void Unpack(char *fname, char *idxname)
 	sprintf(iniPath, "%s\\%s", dirPath, "index.ini");
 	if (_access(iniPath, 4) == -1)
 	{
-		printf("初始化失败，请确认目录下是否含有index.ini\n");
+		printf("鍒濆鍖栧け璐ワ紝璇风‘璁ょ洰褰曚笅鏄惁鍚湁index.ini\n");
 		system("pause");
 		exit(0);
 	}
@@ -49,7 +49,7 @@ void Unpack(char *fname, char *idxname)
 	idx = fopen(buff, "rb");
 	if (idx == NULL)
 	{
-		printf("初始化失败，请确认目录下是否含有%s\n", buff);
+		printf("鍒濆鍖栧け璐ワ紝璇风‘璁ょ洰褰曚笅鏄惁鍚湁%s\n", buff);
 		system("pause");
 		exit(0);
 	}
@@ -90,9 +90,9 @@ void Unpack(char *fname, char *idxname)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project：Helheim-超级机器人大战Z2\n用于基于索引的解包bin文件。\nby Darkness-TX 2023.04.10\n\n");
+	printf("project锛欻elheim-瓒呯骇鏈哄櫒浜哄ぇ鎴榋2\n鐢ㄤ簬鍩轰簬绱㈠紩鐨勮В鍖卋in鏂囦欢銆俓nby Darkness-TX 2023.04.10\n\n");
 	Unpack(argv[1], argv[2]);
-	printf("已完成，总文件数%d\n", FileNum);
+	printf("宸插畬鎴愶紝鎬绘枃浠舵暟%d\n", FileNum);
 	system("pause");
 	return 0;
 }

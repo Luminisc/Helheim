@@ -1,5 +1,5 @@
 /*
-ÓÃÓÚ´ÓbinÎÄ¼şÖĞÌáÈ¡Í¼Æ¬
+ç”¨äºä»binæ–‡ä»¶ä¸­æå–å›¾ç‰‡
 made by Darkness-TX
 2023.04.10
 */
@@ -18,7 +18,7 @@ typedef unsigned char  unit8;
 typedef unsigned short unit16;
 typedef unsigned int   unit32;
 
-unit32 FileNum = 0;//×ÜÎÄ¼şÊı£¬³õÊ¼¼ÆÊıÎª0
+unit32 FileNum = 0;//æ€»æ–‡ä»¶æ•°ï¼Œåˆå§‹è®¡æ•°ä¸º0
 
 unit32 CheckString(char* buff)
 {
@@ -69,7 +69,7 @@ void WritePng(FILE* Pngname, unit32 Width, unit32 Height, unit8* PaletteData, un
 	png_colorp pcolor;
 	unit8* png_alpha;
 	unit32 i = 0;
-	unit32 nplt;//µ÷É«°åÊı
+	unit32 nplt;//è°ƒè‰²æ¿æ•°
 	if (bpp == 8)
 		nplt = 256;
 	else if (bpp == 4)
@@ -77,13 +77,13 @@ void WritePng(FILE* Pngname, unit32 Width, unit32 Height, unit8* PaletteData, un
 	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (png_ptr == NULL)
 	{
-		printf("PNGĞÅÏ¢´´½¨Ê§°Ü!\n");
+		printf("PNGä¿¡æ¯åˆ›å»ºå¤±è´¥!\n");
 		exit(0);
 	}
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL)
 	{
-		printf("infoĞÅÏ¢´´½¨Ê§°Ü!\n");
+		printf("infoä¿¡æ¯åˆ›å»ºå¤±è´¥!\n");
 		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
 		exit(0);
 	}
@@ -125,7 +125,7 @@ void bin2png(char* fname, char* idxname)
 	sprintf(iniPath, "%s\\%s", dirPath, "png.ini");
 	if (_access(iniPath, 4) == -1)
 	{
-		printf("³õÊ¼»¯Ê§°Ü£¬ÇëÈ·ÈÏÄ¿Â¼ÏÂÊÇ·ñº¬ÓĞpng.ini\n");
+		printf("åˆå§‹åŒ–å¤±è´¥ï¼Œè¯·ç¡®è®¤ç›®å½•ä¸‹æ˜¯å¦å«æœ‰png.ini\n");
 		system("pause");
 		exit(0);
 	}
@@ -213,7 +213,7 @@ void bin2png(char* fname, char* idxname)
 		}
 		else
 		{
-			printf("²»Ö§³ÖµÄbppÀàĞÍ£¡bpp:%d\n", bpp);
+			printf("ä¸æ”¯æŒçš„bppç±»å‹ï¼bpp:%d\n", bpp);
 			system("pause");
 		}
 		FileNum++;
@@ -223,9 +223,9 @@ void bin2png(char* fname, char* idxname)
 
 int main(int argc, char* argv[])
 {
-	printf("project£ºHelheim-³¬¼¶»úÆ÷ÈË´óÕ½Z2\nÓÃÓÚ´ÓbinÎÄ¼şÖĞÌáÈ¡Í¼Æ¬¡£\nby Darkness-TX 2023.04.10\n\n");
+	printf("projectï¼šHelheim-è¶…çº§æœºå™¨äººå¤§æˆ˜Z2\nç”¨äºä»binæ–‡ä»¶ä¸­æå–å›¾ç‰‡ã€‚\nby Darkness-TX 2023.04.10\n\n");
 	bin2png(argv[1], argv[2]);
-	printf("ÒÑÍê³É£¬×ÜÎÄ¼şÊı%d\n", FileNum);
+	printf("å·²å®Œæˆï¼Œæ€»æ–‡ä»¶æ•°%d\n", FileNum);
 	system("pause");
 	return 0;
 }

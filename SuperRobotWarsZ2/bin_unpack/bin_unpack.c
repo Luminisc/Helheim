@@ -1,5 +1,5 @@
 /*
-用于解包与解压bin文件
+鐢ㄤ簬瑙ｅ寘涓庤В鍘媌in鏂囦欢
 made by Darkness-TX
 2023.04.08
 */
@@ -63,9 +63,9 @@ void Unpack(char* fname)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project：Helheim-超级机器人大战Z2\n用于解包与解压bin文件。\nby Darkness-TX 2023.04.08\n\n");
+	printf("project锛欻elheim-瓒呯骇鏈哄櫒浜哄ぇ鎴榋2\n鐢ㄤ簬瑙ｅ寘涓庤В鍘媌in鏂囦欢銆俓nby Darkness-TX 2023.04.08\n\n");
 	Unpack(argv[1]);
-	printf("已完成，总文件数%d\n", FileNum);
+	printf("宸插畬鎴愶紝鎬绘枃浠舵暟%d\n", FileNum);
 	system("pause");
 	return 0;
 }

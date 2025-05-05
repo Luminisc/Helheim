@@ -1,5 +1,5 @@
 /*
-ÓÃÓÚ·â°üÓëÑ¹ËõEVENTBIN.BIN
+ç”¨äºå°åŒ…ä¸å‹ç¼©EVENTBIN.BIN
 made by Darkness-TX
 2023.03.21
 */
@@ -22,8 +22,8 @@ unit32 FileNum = 0;
 
 struct index
 {
-	char FileName[260];//ÎÄ¼şÃû
-	unit32 FileSize;//ÎÄ¼ş´óĞ¡
+	char FileName[260];//æ–‡ä»¶å
+	unit32 FileSize;//æ–‡ä»¶å¤§å°
 }Index[2000];
 
 struct EVENTBDY_s
@@ -44,16 +44,16 @@ unit32 process_dir(char* dname)
 {
 	long Handle;
 	struct _finddata64i32_t FileInfo;
-	_chdir(dname);//Ìø×ªÂ·¾¶
+	_chdir(dname);//è·³è½¬è·¯å¾„
 	if ((Handle = _findfirst("*.bin", &FileInfo)) == -1L)
 	{
-		printf("Ã»ÓĞÕÒµ½Æ¥ÅäµÄÏîÄ¿£¬ÇëÈ·ÈÏÄ¿Â¼ÖĞÊÇ·ñ´æÔÚ.binÎÄ¼ş\n");
+		printf("æ²¡æœ‰æ‰¾åˆ°åŒ¹é…çš„é¡¹ç›®ï¼Œè¯·ç¡®è®¤ç›®å½•ä¸­æ˜¯å¦å­˜åœ¨.binæ–‡ä»¶\n");
 		system("pause");
 		return -1;
 	}
 	do
 	{
-		if (FileInfo.name[0] == '.')  //¹ıÂË±¾¼¶Ä¿Â¼ºÍ¸¸Ä¿Â¼
+		if (FileInfo.name[0] == '.')  //è¿‡æ»¤æœ¬çº§ç›®å½•å’Œçˆ¶ç›®å½•
 			continue;
 		sprintf(Index[FileNum].FileName, FileInfo.name);
 		Index[FileNum].FileSize = FileInfo.size;
@@ -194,7 +194,7 @@ void PackBlock(char* dname)
 			}
 			else
 			{
-				printf("\tÎ´ÖªµÄ¿é±êÊ¶:%s\n", eventname);
+				printf("\tæœªçŸ¥çš„å—æ ‡è¯†:%s\n", eventname);
 				system("pause");
 			}
 			fseek(dst, 0, SEEK_END);
@@ -274,10 +274,10 @@ void Pack(char* dname)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project£ºHelheim-³¬¼¶»úÆ÷ÈË´óÕ½Z2\nÓÃÓÚ·â°üÓëÑ¹ËõEVENTBIN.BIN¡£\nby Darkness-TX 2023.03.21\n\n");
+	printf("projectï¼šHelheim-è¶…çº§æœºå™¨äººå¤§æˆ˜Z2\nç”¨äºå°åŒ…ä¸å‹ç¼©EVENTBIN.BINã€‚\nby Darkness-TX 2023.03.21\n\n");
 	process_dir(argv[1]);
 	Pack(argv[1]);
-	printf("ÒÑÍê³É£¬×ÜÎÄ¼şÊı%d\n", FileNum);
+	printf("å·²å®Œæˆï¼Œæ€»æ–‡ä»¶æ•°%d\n", FileNum);
 	system("pause");
 	return 0;
 }

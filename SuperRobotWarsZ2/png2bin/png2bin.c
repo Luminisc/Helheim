@@ -1,5 +1,5 @@
 /*
-用于导入图片到bin文件
+鐢ㄤ簬瀵煎叆鍥剧墖鍒癰in鏂囦欢
 made by Darkness-TX
 2023.04.10
 */
@@ -18,7 +18,7 @@ typedef unsigned char  unit8;
 typedef unsigned short unit16;
 typedef unsigned int   unit32;
 
-unit32 FileNum = 0;//总文件数，初始计数为0
+unit32 FileNum = 0;//鎬绘枃浠舵暟锛屽垵濮嬭鏁颁负0
 
 unit32 CheckString(char* buff)
 {
@@ -70,7 +70,7 @@ void ReadPng(FILE* Pngname, unit32 Width, unit32 Height, unit8* PaletteData, uni
 	png_bytep png_alpha;
 	png_bytep* rows;
 	unit32 i = 0;
-	unit32 nplt;//调色板数
+	unit32 nplt;//璋冭壊鏉挎暟
 	if (bpp == 8)
 		nplt = 256;
 	else if (bpp == 4)
@@ -78,20 +78,20 @@ void ReadPng(FILE* Pngname, unit32 Width, unit32 Height, unit8* PaletteData, uni
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (png_ptr == NULL)
 	{
-		printf("PNG信息创建失败!\n");
+		printf("PNG淇℃伅鍒涘缓澶辫触!\n");
 		exit(0);
 	}
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL)
 	{
-		printf("info信息创建失败!\n");
+		printf("info淇℃伅鍒涘缓澶辫触!\n");
 		png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
 		exit(0);
 	}
 	end_ptr = png_create_info_struct(png_ptr);
 	if (end_ptr == NULL)
 	{
-		printf("end信息创建失败!\n");
+		printf("end淇℃伅鍒涘缓澶辫触!\n");
 		png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
 		exit(0);
 	}
@@ -138,7 +138,7 @@ void png2bin(char* fname, char* idxname)
 	sprintf(iniPath, "%s\\%s", dirPath, "png.ini");
 	if (_access(iniPath, 4) == -1)
 	{
-		printf("初始化失败，请确认目录下是否含有png.ini\n");
+		printf("鍒濆鍖栧け璐ワ紝璇风‘璁ょ洰褰曚笅鏄惁鍚湁png.ini\n");
 		system("pause");
 		exit(0);
 	}
@@ -243,7 +243,7 @@ void png2bin(char* fname, char* idxname)
 		}
 		else
 		{
-			printf("不支持的bpp类型！bpp:%d\n", bpp);
+			printf("涓嶆敮鎸佺殑bpp绫诲瀷锛乥pp:%d\n", bpp);
 			system("pause");
 		}
 		fclose(src);
@@ -254,9 +254,9 @@ void png2bin(char* fname, char* idxname)
 
 int main(int argc, char* argv[])
 {
-	printf("project：Helheim-超级机器人大战Z2\n用于导入图片到bin文件。\nby Darkness-TX 2023.04.10\n\n");
+	printf("project锛欻elheim-瓒呯骇鏈哄櫒浜哄ぇ鎴榋2\n鐢ㄤ簬瀵煎叆鍥剧墖鍒癰in鏂囦欢銆俓nby Darkness-TX 2023.04.10\n\n");
 	png2bin(argv[1], argv[2]);
-	printf("已完成，总文件数%d\n", FileNum);
+	printf("宸插畬鎴愶紝鎬绘枃浠舵暟%d\n", FileNum);
 	system("pause");
 	return 0;
 }
