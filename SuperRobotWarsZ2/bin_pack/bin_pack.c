@@ -22,24 +22,24 @@ unit32 FileNum = 0;
 
 struct index
 {
-	char FileName[260];//文件名
-	unit32 FileSize;//文件大小
+	char FileName[260];//file name
+	unit32 FileSize;//File size
 }Index[20000];
 
 unit32 process_dir(char* dname)
 {
 	long Handle;
 	struct _finddata64i32_t FileInfo;
-	_chdir(dname);//跳转路径
+	_chdir(dname);//Jump path
 	if ((Handle = _findfirst("*.bin", &FileInfo)) == -1L)
 	{
-		printf("没有找到匹配的项目，请确认目录中是否存在.bin文件\n");
+		printf("No matching item was found, please confirm whether the .bin file exists in the directory.\n");
 		system("pause");
 		return -1;
 	}
 	do
 	{
-		if (FileInfo.name[0] == '.')  //过滤本级目录和父目录
+		if (FileInfo.name[0] == '.')  //Filter the directory at this level and the parent directory
 			continue;
 		sprintf(Index[FileNum].FileName, FileInfo.name);
 		Index[FileNum].FileSize = FileInfo.size;
@@ -97,9 +97,9 @@ void Pack(char* fname)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project：Helheim-超级机器人大战Z2\n用于封包与压缩bin文件。\nby Darkness-TX 2023.04.08\n\n");
+	printf("project: Helheim - Super Robot Wars Z2\n is used to encapsulate and compress bin files.\nby Darkness-TX 2023.04.08\n\n");
 	Pack(argv[1]);
-	printf("已完成，总文件数%d\n", FileNum);
+	printf("Completed, total number of files %d\n", FileNum);
 	system("pause");
 	return 0;
 }

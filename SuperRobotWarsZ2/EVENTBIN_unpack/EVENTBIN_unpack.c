@@ -1,4 +1,4 @@
-/*
+﻿/*
 用于解包与解压EVENTBIN.BIN
 made by Darkness-TX
 2023.03.06
@@ -41,7 +41,7 @@ void UnpackBlock(unit8* data, unit32 size, unit32 number)
 	FILE* dst = NULL;
 	memcpy(&EVENT_Header, data, 0x10);
 	pos = EVENT_Header.header_len;
-	//EVENT_Header.num基本都是1，少量0，没发现有1以上的
+	//EVENT_Header.num is basically 1, a small amount of 0, no more than 1 was found
 	while (EVENT_Header.num)
 	{
 		memcpy(eventname, data + pos, 12);
@@ -141,7 +141,7 @@ void Unpack()
 	src = fopen("EVENTBINBDY.BIN", "rb");
 	if (src == NULL)
 	{
-		printf("未在目录下找到EVENTBINBDY.BIN！\n");
+		printf("EVENTBINBDY.BIN not found in the directory!\n");
 		system("pause");
 		exit(0);
 	}
@@ -160,7 +160,7 @@ void Unpack()
 	src = fopen("EVENTBIN.BIN", "rb");
 	if (src == NULL)
 	{
-		printf("未在目录下找到EVENTBIN.BIN！\n");
+		printf("EVENTBIN.BIN was not found in the directory!\n");
 		system("pause");
 		exit(0);
 	}
@@ -190,9 +190,9 @@ void Unpack()
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project：Helheim-超级机器人大战Z2\n用于解包与解压EVENTBIN.BIN。\nby Darkness-TX 2023.03.06\n\n");
+	printf("project: Helheim - Super Robot Wars Z2\n is used to unpack and decompress EVENTBIN.BIN.\nby Darkness-TX 2023.03.06\n\n");
 	Unpack();
-	printf("已完成，总文件数%d\n", FileNum);
+	printf("Completed, total number of files%d\n", FileNum);
 	system("pause");
 	return 0;
 }

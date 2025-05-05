@@ -28,7 +28,7 @@ unit32 get_start_offset(unit8* data)
 	size >>= 1;
 	if (size <= 0)
 	{
-		printf("解压大小错误！size:0x%X\nsceKernelDcacheWritebackInvalidateAll()\n", size);
+		printf("Decompression size error! size:0x%X\nsceKernelDcacheWritebackInvalidateAll()\n", size);
 		system("pause");
 		return -1;
 	}
@@ -42,13 +42,16 @@ unit32 get_start_offset(unit8* data)
 	buff2 >>= 1;
 	buff_size = ((buff2 >> 1) & 0x0F) + 8;
 	buff_size = 1 << buff_size;
-	//buff_size以0x100为最低大小，所以上面的计算要+8，具体实现看make_buff_size
+	// buff_size is the minimum size of 0x100, so the above calculation should be +8. For the specific implementation, see make_buff_size.
+	// buff_size以0x100为最低大小，所以上面的计算要+8，具体实现看make_buff_size
 	if (buff_size >= size)
 	{
 		if ((buff2 & 0x21) != 1)
 		{
 			if (buff2 & 0x40)
 			{
+				//But it won't be used later on buff2, I don't know what the meaning of this section is.
+				//Of course (buff2 & 0x21) != 1 has not appeared before
 				//但是buff2后面并不会用到，不知道这段有啥意义
 				//当然本身(buff2 & 0x21) != 1就没出现过
 				buff2 = 0;
@@ -79,6 +82,9 @@ unit32 get_start_offset(unit8* data)
 	//对，就是这样，这里直接清零刚刚的计算了，只能当成是塞垃圾数据了，
 	//当然更可能的是这算法是另一种算法的简化版本，在这算法里弃用了上面的运算结果，
 	//下面这轮运算是必须的，但文件中是直接读取0x01强制结束掉，果然就是简化版本吧？
+	//Yes, that's it. I directly cleared the calculation just now, and I can only treat it as a junk data.
+	//Of course it is more likely that this algorithm is a simplified version of another algorithm, in which the above calculation results are discarded.
+	//The following round of operations is necessary, but the file is directly read 0x01 and forced to end. It is indeed a simplified version, right?
 	buff2 = 0;
 	do
 	{
@@ -202,12 +208,12 @@ unit32 LZdecompress(unit8* cdata, unit8* udata, unit32 size)
 	int buffsize = 0, round = 0, distance = 0;
 	do
 	{
-		//创建数据
+		//Create data
 		sign = *src;
 		src++;
 		buffsize = sign & 0x0F;
 		round = sign >> 4;
-		if (buffsize == 0)//处理低位，表示初始数据的buffsize
+		if (buffsize == 0)//处理低位，表示初始数据的buffsize	// Process low bits, indicating the buffsize of the initial data
 		{
 			do
 			{
@@ -218,7 +224,7 @@ unit32 LZdecompress(unit8* cdata, unit8* udata, unit32 size)
 			} while ((buffsize & 1) == 0);
 			buffsize >>= 1;
 		}
-		if (round == 0)//处理高位，表示后续解压的回数
+		if (round == 0)//处理高位，表示后续解压的回数	//Process high positions, indicating the number of subsequent decompression
 		{
 			do
 			{
@@ -238,7 +244,7 @@ unit32 LZdecompress(unit8* cdata, unit8* udata, unit32 size)
 		} while (buffsize != 0);
 		if ((unit32)(dst - udata) >= size)
 			return 0;
-		//开始处理
+		//Start processing
 		do
 		{
 			sign = *src;
@@ -246,6 +252,7 @@ unit32 LZdecompress(unit8* cdata, unit8* udata, unit32 size)
 			distance = sign & 0x0F;
 			buffsize = sign >> 4;
 			//解压就是经典LZ压缩的（前向距离,长度），但滑动窗口大小似乎没有限制，前向距离可以非常大
+			//Decompression is classic LZ compression (forward distance, length), but there seems to be no limit on the size of the sliding window, and the forward distance can be very large.
 			if ((distance & 1) == 0)//处理低位
 			{
 				do
