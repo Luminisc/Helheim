@@ -1,3 +1,9 @@
+#### Installation
+1. Visual Studio C++ Build Tools v142 (VS 2019)
+2. Install `libpng-v142` from Nuget, to `png2bin` and `bin2png` projects
+
+---
+
 # Helheim - Super Robot Wars Z2
 Used for handling game-related files for Z2: Saisei-hen (Second Super Robot Wars Z).
 
