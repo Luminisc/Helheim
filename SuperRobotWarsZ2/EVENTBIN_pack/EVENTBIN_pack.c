@@ -12,6 +12,9 @@ made by Darkness-TX
 #include <direct.h>
 #include <Windows.h>
 #include <locale.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include "SRWZ_LZ.h"
 
 typedef unsigned char  unit8;
@@ -22,8 +25,8 @@ unit32 FileNum = 0;
 
 struct index
 {
-	char FileName[260];//文件名
-	unit32 FileSize;//文件大小
+	char FileName[260];//file name
+	unit32 FileSize;//File size
 }Index[2000];
 
 struct EVENTBDY_s
@@ -40,20 +43,34 @@ struct EVENT_s
 	unit32 size;
 }EVENT_Header;
 
+void ensure_dir_exists(char* filename)
+{
+	struct stat st = { 0 };
+	if (stat(filename, &st) == -1) {
+		_mkdir(filename);
+	}
+}
+
+void check_file_open(FILE* file)
+{
+	if (file == NULL)
+		printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+}
+
 unit32 process_dir(char* dname)
 {
-	long Handle;
+	intptr_t Handle;
 	struct _finddata64i32_t FileInfo;
-	_chdir(dname);//跳转路径
+	_chdir(dname);//Jump path
 	if ((Handle = _findfirst("*.bin", &FileInfo)) == -1L)
 	{
-		printf("没有找到匹配的项目，请确认目录中是否存在.bin文件\n");
+		printf("No matching item was found, please confirm whether the .bin file exists in the directory.\n");
 		system("pause");
 		return -1;
 	}
 	do
 	{
-		if (FileInfo.name[0] == '.')  //过滤本级目录和父目录
+		if (FileInfo.name[0] == '.')  //Filter the directory at this level and the parent directory
 			continue;
 		sprintf(Index[FileNum].FileName, FileInfo.name);
 		Index[FileNum].FileSize = FileInfo.size;
@@ -76,6 +93,7 @@ void PackBlock(char* dname)
 		fread(&EVENT_Header, sizeof(EVENT_Header), 1, src);
 		fseek(src, EVENT_Header.header_len, SEEK_SET);
 		sprintf(filename, "%s_dst", dname);
+		ensure_dir_exists(filename);
 		_chdir(filename);
 		sprintf(filename, "%s_dst\\%s", dname, Index[i].FileName);
 		dst = fopen(filename, "wb");
@@ -92,6 +110,7 @@ void PackBlock(char* dname)
 				pos = ftell(dst);
 				printf("\t%s oldblocksize:0x%X\n", eventname, blocksize);
 				sprintf(filename, "%04d_%s", i, eventname);
+				ensure_dir_exists(filename);
 				_chdir(filename);
 				count = 0;
 				filesize = 0;
@@ -179,6 +198,7 @@ void PackBlock(char* dname)
 			else if (strncmp(eventname, "MTFLz2_2", 8) == 0)
 			{
 				sprintf(filename, "%04d", i);
+				ensure_dir_exists(filename);
 				_chdir(filename);
 				block = fopen("MTFLz2_2.bin", "rb");
 				fseek(block, 0, SEEK_END);
@@ -194,7 +214,7 @@ void PackBlock(char* dname)
 			}
 			else
 			{
-				printf("\t未知的块标识:%s\n", eventname);
+				printf("\tUnknown block identifier:%s\n", eventname);
 				system("pause");
 			}
 			fseek(dst, 0, SEEK_END);
@@ -230,6 +250,7 @@ void Pack(char* dname)
 	bdy = fopen("EVENTBINBDY.new", "wb");
 	hed = fopen("EVENTBINHED.new", "wb");
 	sprintf(dstname, "%s_dst", dname);
+	ensure_dir_exists(dstname);
 	_chdir(dstname);
 	for (i = 0; i < FileNum; i++)
 	{
@@ -274,10 +295,10 @@ void Pack(char* dname)
 int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "chs");
-	printf("project：Helheim-超级机器人大战Z2\n用于封包与压缩EVENTBIN.BIN。\nby Darkness-TX 2023.03.21\n\n");
+	printf("project: Helheim - Super Robot Wars Z2\n is used for packets and compression EVENTBIN.BIN.\nby Darkness-TX 2023.03.21\n\n");
 	process_dir(argv[1]);
 	Pack(argv[1]);
-	printf("已完成，总文件数%d\n", FileNum);
+	printf("Completed, total number of files %d\n", FileNum);
 	system("pause");
 	return 0;
 }
