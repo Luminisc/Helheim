@@ -3,8 +3,6 @@
 #by Darkness-TX 2023.03.07
 import struct
 import os
-import sys
-import io
 
 def walk(adr):
 	mylist=[]
@@ -44,28 +42,31 @@ def main():
 		src.seek(8,os.SEEK_SET)
 		header_len = byte2int(src.read(4))
 		version = src.read(4)
-		filesize = byte2int(src.read(4))#加上header_len才是文件大小
+		filesize = byte2int(src.read(4))#加上header_len才是文件大小	Add header_len to the file size
 		print('version:%s header_len:0x%X filesize:0x%X'%(version.decode('932'),header_len,filesize+header_len))
 		src.seek(header_len,os.SEEK_SET)
 		#总块的信息，文件名带SDEMO的file_block就是sdem，带DLGEV的file_block就是dlev
 		#0165的文件是kwrb
+		#The information of the total block, the file name with SDEMO file_block is sdem, and the file_block with DLGEV is dlev
+		#0165's file is kwrb
 		file_block_name = src.read(4)
 		file_block_size = byte2int(src.read(4))
 		file_block_header_size = byte2int(src.read(4))
 		file_block_data_size = byte2int(src.read(4))
 		print('\t%s block_size:0x%X block_header_size:0x%X block_data_size:0x%X'%(file_block_name.decode('932'),file_block_size,file_block_header_size,file_block_data_size))
 		src.seek(header_len + file_block_header_size,os.SEEK_SET)
-		#开始遍历块
+		#Start traversing the block
 		while src.tell() < file_block_size + header_len:
 			pos = src.tell()
 			block_name = src.read(4)
 			block_size = byte2int(src.read(4))
 			block_header_size = byte2int(src.read(4))
 			block_data_size = byte2int(src.read(4))
-			if block_name.decode('932') == 'evtb':
+			decoded_block_name = block_name.decode('932')
+			if decoded_block_name == 'evtb':
 				data = src.read(block_data_size)
-			elif block_name.decode('932') == 'evnt':#文本指针
-				block_group_num = byte2int(src.read(4))#每组长度为0x20
+			elif decoded_block_name == 'evnt':#Text pointer
+				block_group_num = byte2int(src.read(4))#Each group length is 0x20
 				#data = src.read(block_data_size)
 				dst = open(fn+'_point.txt','w',encoding='utf16')
 				for i in range(0,block_group_num):
@@ -73,19 +74,21 @@ def main():
 					data = src.read(4)
 					dst.write('%08d|%08X|%08X\n'%(i,src.tell() - 4 - pos - block_header_size,byte2int(data)))
 					src.seek(0x0C,os.SEEK_CUR)
-			elif block_name.decode('932') == 'lkke':#地址长度全记录，只有一个文件有这个块
-				block_group_num = byte2int(src.read(4))#组数
+				dst.flush()
+			elif decoded_block_name == 'lkke':#The address length is fully recorded, only one file has this block
+				block_group_num = byte2int(src.read(4))#Number of groups
 				dst = open(fn+'_point.txt','w',encoding='utf16')
 				for  i in range(0,int(block_data_size / 8)):
 					str_off = byte2int(src.read(4))
 					str_size = byte2int(src.read(4))
-					if str_off != 0xFFFFFFFF:#0xFFFFFFFF后跟组编号
+					if str_off != 0xFFFFFFFF:#0xFFFFFFFF followed by group number
 						dst.write('%08d|%08X|%08X|%08X\n'%(i,src.tell() - 8 - pos - block_header_size,str_off,str_size))
-			elif block_name.decode('932') == 'kywd':
+				dst.flush()
+			elif decoded_block_name == 'kywd':
 				block_unk1 = byte2int(src.read(4))
 				block_unk2 = byte2int(src.read(4))
 				data = src.read(block_data_size)
-			elif block_name.decode('932') == 'jstr':#文本
+			elif decoded_block_name == 'jstr':#text
 				data = src.read(block_data_size)
 				dst = open(fn+'.bin','wb')
 				for i in range(0,len(data)):
@@ -93,6 +96,7 @@ def main():
 						dst.write(struct.pack('B',data[i]))
 					else:
 						dst.write(struct.pack('B',data[i] ^ 0x7A))
+				dst.flush()
 				dst.close()
 				jstr = open(fn+'.bin','rb')
 				jstr.seek(0,os.SEEK_END)
@@ -105,17 +109,18 @@ def main():
 					string = dumpstr(jstr)
 					dst.write(FormatString(string.replace('\n','\\n'),count,offset))
 					count += 1
+				dst.flush()
 				jstr.close()
 				os.remove(fn+'.bin')
 			else:
-				print('\t未知的块名:%s'%(block_name.decode('932')))
+				print('\tUnknown block name:%s'%(decoded_block_name))
 				os.system('pause')
 				src.seek(pos + block_header_size,os.SEEK_SET)
 				data = src.read(block_data_size)
-			print('\t\t%s block_size:0x%X block_header_size:0x%X block_data_size:0x%X'%(block_name.decode('932'),block_size,block_header_size,block_data_size))
+			print('\t\t%s block_size:0x%X block_header_size:0x%X block_data_size:0x%X'%(decoded_block_name,block_size,block_header_size,block_data_size))
 		block_name = src.read(4)
 		if block_name.decode('932') != 'ENDo':
-			print('\t未读取到ENDo！offset:0x%X'%(src.tell() - 4))
+			print('\tENDo not read!offset:0x%X'%(src.tell() - 4))
 			os.system('pause')
 
 if '__main__' == __name__:
